@@ -1,0 +1,5 @@
+webm	.badge-animated-container-animated	data-webm
+mp4	.badge-animated-container-animated	data-mp4
+gif	.badge-animated-container-animated	data-image
+thumb	.badge-item-img	src
+title	.badge-item-img	alt
