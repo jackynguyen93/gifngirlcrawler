@@ -1,6 +1,7 @@
 package com.vozer.service;
 
 import com.vozer.model.Post;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
 import org.springframework.stereotype.Service;
@@ -32,28 +33,24 @@ public class UploadFile {
             ftpClient.enterLocalPassiveMode();
 
             ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
+
+
             for (Map.Entry<String, String> nameAndUrl :namesAndUrls.entrySet()) {
                 URL url = new URL(nameAndUrl.getValue());
-                InputStream inputStream = new BufferedInputStream(url.openStream());
-
-                String serverFile = "";
+                System.out.println("Start uploading file " + nameAndUrl.getKey());
                 if ("video".equals(fileType)) {
                     // upload to folder video
-                    ftpClient.storeFile( serverVideoPath + nameAndUrl.getKey(), inputStream);
+                    ftpClient.storeFile(serverVideoPath + nameAndUrl.getKey(), url.openStream());
                     if (nameAndUrl.getKey().contains(".webm")) {
                         // upload to folder image for webm file
-                        serverFile = serverImgPath + "s-" + nameAndUrl.getKey();
+                        ftpClient.storeFile(serverImgPath + "s-" + nameAndUrl.getKey(), url.openStream());
+                        ftpClient.storeFile(serverImgPath + "l-" + nameAndUrl.getKey(), url.openStream());
+                        ftpClient.storeFile(serverImgPath + nameAndUrl.getKey(), url.openStream());
                     }
                 } else {
-                    serverFile = serverImgPath + nameAndUrl.getKey();
-                }
-
-                System.out.println("Start uploading file: " + serverFile);
-
-                boolean done = ftpClient.storeFile(serverFile, inputStream);
-                inputStream.close();
-                if (done) {
-                    System.out.println("The " + serverFile + " file is uploaded successfully.");
+                    ftpClient.storeFile(serverImgPath + "l-" + nameAndUrl.getKey(), url.openStream());
+                    ftpClient.storeFile(serverImgPath + "s-" + nameAndUrl.getKey(), url.openStream());
+                    ftpClient.storeFile(serverImgPath + nameAndUrl.getKey(), url.openStream());
                 }
             }
 

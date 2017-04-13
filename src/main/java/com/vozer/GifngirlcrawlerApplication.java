@@ -9,7 +9,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
 @EnableScheduling
-public class GifngirlcrawlerApplication  {
+public class GifngirlcrawlerApplication {
 
 	@Autowired
 	CrawlerImages crawlerImages;
@@ -20,4 +20,7 @@ public class GifngirlcrawlerApplication  {
 
 	}
 
+	public void run(String... strings) throws Exception {
+		crawlerImages.crawler9gag();
+	}
 }

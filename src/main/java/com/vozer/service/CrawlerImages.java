@@ -48,7 +48,7 @@ public class CrawlerImages {
 
     final String url9gag = "http://9gag.com/gif?ref=9nav";
 
-    @Scheduled(cron = "30 21 1,7,13,19 * * *")
+    @Scheduled(cron = "0 0 1,3,7,10,13,16,19,23 * * *")
     public void crawler9gag() throws Exception {
         System.out.println("#### Start Crawler 9gag job ####");
 
@@ -72,15 +72,15 @@ public class CrawlerImages {
 
             image.setStory(((JSONArray) jsonObject.get("title")).get(i).toString());
             image.setPic(fileName);
-            image.setMediafile(fileName + ".webm");
+            image.setMediafile(fileName + ".jpg");
             image.setTags("gif");
             image.setUrl(gifLink);
             listImages.add(image);
 
             webmFiles.put(fileName + ".webm", webmLink);
             mp4Files.put(fileName + ".mp4", mp4Link);
-            gifFiles.put("l-" + fileName + ".gif", gifLink);
-            thumbFiles.put("l-" + fileName + ".jpg", thumbLink);
+            gifFiles.put(fileName + ".gif", gifLink);
+            thumbFiles.put(fileName + ".jpg", thumbLink);
         }
 
         imageDao.insertImages(listImages);
